@@ -10,7 +10,7 @@ async function getText(url) {
       url: url
     },
     headers: {
-      'X-RapidAPI-Key': 'YOUR_API_KEY', //Replace this with your RapidAPI Ker for this API: https://rapidapi.com/altanalys/api/text-extract7
+      'X-RapidAPI-Key': 'YOUR_API_KEY', //Replace this with your RapidAPI Key for this API service: https://rapidapi.com/altanalys/api/text-extract7
       'X-RapidAPI-Host': 'text-extract7.p.rapidapi.com'
     }
   };
@@ -24,8 +24,8 @@ async function getText(url) {
   }
 }
 
-const inputCsvFilePath = 'input.csv'; //make sure you have input.csv file with header as "URL" and then list of links below it
-const outputJsonFilePath = 'scraped_news.json'; //this is the output file which saves text, meta data, etc for every link 
+const inputCsvFilePath = 'input.csv'; //make sure you have input.csv file with a header as "url" and then a list of links below it
+const outputJsonFilePath = 'scraped_news.json'; //this is the output file which saves text, metadata, etc for every link in json format
 
 const urls = [];
 let processedCount = 0;
