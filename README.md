@@ -25,7 +25,7 @@ node news_summarizer.mjs
 ```
 
 ## Step 3: Format the Output
-Run `format_md.js` to format the output in markdown format. The output files are saved as `news_report_{TIMESTAMP}.md` in the `daily_reports folder`.
+Run `format_md.js` to format the output in markdown format. The output files are saved as `news_report_{TIMESTAMP}.md` in the `daily_reports` folder.
 
 ```
 
