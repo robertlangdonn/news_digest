@@ -31,13 +31,13 @@ const processEntries = async () => {
         // Make the API request with rate limiting
         const response = await rateLimit(async () => {
           return await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-3.5-turbo', //Change model as needed. Keep in mind the pricing and ratelimits of the model you use
             messages: [
               {
                 role: 'system',
                 content:
                   "Read noisy scraped news text and summarize it in 3 bullet points. You will only share the 3 bullet point summary as your response.",
-              },
+              }, // Change this prompt as needed
               {
                 role: 'user',
                 content: userMessage,
