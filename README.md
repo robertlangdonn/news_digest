@@ -5,8 +5,8 @@ The purpose of this project is to extract text from news articles using the Text
 
 - Text Extract API Key: You'll need to obtain your Text Extract API Key from [here](https://rapidapi.com/altanalys/api/text-extract7). It offers a paid option with a free tier.
 - OpenAI API Key: Get your OpenAI API Key from [here](https://platform.openai.com/account/api-keys). Please note that this is a paid service.
-- Node.js: Ensure you have Node.js installed. If you don't have it, you can download it from [here](https://nodejs.org/en).
-- Code-related Packages: Make sure to install the necessary Node.js packages for this project.
+- Node.js: Download it from [here](https://nodejs.org/en).
+- Code-related Packages: Make sure to install the necessary Node.js packages for this project, you should see the missing ones when you run the scripts for the first time.
 
 # How to use
 ## Step 1: Extract Text from News Articles
