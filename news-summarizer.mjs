@@ -3,10 +3,10 @@ import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: "YOUR_API_KEY",
-});
+}); //Replace this with your OpenAI API Key
 
 // Read the JSON file
-const jsonData = fs.readFileSync('output.json', 'utf8');
+const jsonData = fs.readFileSync('scraped_news.json', 'utf8'); //Replace the file name
 const data = JSON.parse(jsonData);
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -36,20 +36,21 @@ const processEntries = async () => {
               {
                 role: 'system',
                 content:
-                  "Read noisy scraped news text and summarize it in 4 bullet points. You will only share the 4 bullet point summary as your response and nothing else.",
+                  "Read noisy scraped news text and summarize it in 3 bullet points. You will only share the 3 bullet point summary as your response.",
               },
               {
                 role: 'user',
                 content: userMessage,
               },
             ],
-            temperature: 0.5,
+            //Adjust temperature and output tokens as needed
+            temperature: 0.1, 
             max_tokens: 256,
             top_p: 1,
             frequency_penalty: 0,
             presence_penalty: 0,
           });
-        }, 75); // Wait for this number of milliseconds between requests (adjust as needed)
+        }, 1500); // Wait for this number of milliseconds between requests 
 
         // Extract the required values and add them to the results array
         const result = {
@@ -73,7 +74,7 @@ const processEntries = async () => {
   }
 
   // Write the results to a JSON file
-  fs.writeFileSync('output_summary.json', JSON.stringify(results, null, 2));
+  fs.writeFileSync('news_summary.json', JSON.stringify(results, null, 2));
 };
 
 // Call the function to start processing entries
