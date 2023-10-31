@@ -11,7 +11,7 @@ The purpose of this project is to extract text from news articles using the Text
 # How to use
 ## Step 1: Extract Text from News Articles
 - Create a list of URLs of the news articles you want to summarize in the `input.csv` file.
-- Run `get_news_text.js` to scrape the text, metadata, and other information from each news article. The output will be saved in `scraped_news.json`. During the process, you will receive console log messages for each link, indicating whether the data was saved successfully or if there were any issues. At the end, you'll see the total number of successfully saved links and a list of any failed URLs.
+- Run `get_news_text.js` to scrape the text, metadata, and other information from each news article. The output will be saved in `scraped_news.json`. During the process, you will see console log messages for each link, indicating whether the data was saved successfully or failed to save. At the end, you'll see the total number of successfully saved links and a list of any failed URLs.
 ```
 
 node get_news_text.js
