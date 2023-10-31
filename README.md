@@ -39,3 +39,7 @@ node format_md.js
 - In `news_summarizer.mjs`, there may be instances where there is no response from the OpenAI API for a particular entry, resulting in a blank console. In such cases, you'll need to terminate the process (CTRL+C) and run the script again on the entire file.
 
 - The scraped news in the first step and the summarized news in the second step are overwritten in the same `scraped_news.json` and `news_summary.json` files when you run the scripts multiple times. However, the final, formatted output is saved with a timestamp in a new file in the `daily_reports` folder for every run.
+
+# Next Steps?
+- Write a custom scraper instead of using the paid API?
+- Use open-source LLM on the local machine to summarize the text instead of OpenAI paid APIs?
