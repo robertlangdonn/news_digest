@@ -5,7 +5,7 @@ The purpose of this project is to extract text from news articles using the Text
 
 - Text Extract API Key: You'll need to obtain your Text Extract API Key from [here](https://rapidapi.com/altanalys/api/text-extract7). It offers a paid option with a free tier.
 - OpenAI API Key: Get your OpenAI API Key from [here](https://platform.openai.com/account/api-keys). This is a paid service.
-- Create/update a `.env` file with your Text Extract API Key & OpenAI API Key.
+- Create/update the `.env` file with your Text Extract API Key & OpenAI API Key.
 - Node.js: Download it from [here](https://nodejs.org/en).
 - Install all the dependencies from `package.json` using the following:
 ```
