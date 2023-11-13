@@ -1,4 +1,4 @@
-# News Digest Summary
+# News Digest
 The purpose of this project is to extract text from news articles using the Text Extract API and summarize them using the GPT 3.5 OpenAI API. The need for this project emerged from my part of my job to create a daily news summary report for CXOs.
 
 # Prerequisites
@@ -30,7 +30,7 @@ node report.js
 
 # Understanding How to Run the Scripts Individually
 
-## Step 1: Extract Text from News Articles
+## 1. Extract Text from News Articles
 - Create a list of URLs of the news articles you want to summarize in the `input.csv` file.
 - Run `get_news_text.js` to scrape the text, metadata, and other information from each news article. The output will be saved in `scraped_news.json`. During the process, you will see console log messages for each link, indicating whether the data was saved successfully or failed to save. At the end, you'll see the total number of successfully saved links and a list of any failed URLs which are saved in `failed_urls.csv` file. Note that both `scraped_news.json` and `failed_urls.csv` are overwritten with each script run, not appended.
 
@@ -42,7 +42,7 @@ node get_news_text.js
 ```
 
 
-## Step 2: Summarize News Articles
+## 2. Summarize News Articles
 - To summarize the extracted news articles, run `news_summarizer.mjs`. This script uses GPT-3.5 to condense the text of each article. You can adjust the script parameters, including changing the model, number of input and output tokens, and modifying the prompt. The default summarization prompt is: "Read noisy scraped news text and summarize it in 3 bullet points. You will only share the 3 bullet point summary as your response."
 - As the script runs, log statements provide updates on each URL's processing status, indicating whether the message is valid, and if the entry has been successfully processed and saved.
 - The completed summaries are stored in `news_summary.json`. This file includes the headline, URL, and a concise 3-point summary for each article.
@@ -53,7 +53,7 @@ node news_summarizer.mjs
 ```
 
 
-## Step 3: Format the Output
+## 3. Format the Output
 Run the `format_md.js` script to format the output into Markdown, creating a file named `news_report_{TIMESTAMP}.md` in the `daily_reports\md` folder. It also renames the `news_summary.json` to `news_report_{TIMESTAMP}.json` and moves it to the `daily_reports\json` folder, ensuring both Markdown and JSON formatted reports are neatly organized and timestamped for easy reference.
 
 ```
