@@ -1,5 +1,5 @@
 # News Digest
-The purpose of this project is to extract text from news articles using the Text Extract API and summarize them using the GPT 3.5 OpenAI API. The need for this project emerged from my part of my job to create a daily news summary report for CXOs.
+The purpose of this project is to extract text from news articles using the Text Extract API and summarize them using the GPT 3.5 OpenAI API. The need for this project emerged because a part of my job was to create a daily news summary report for CXOs.
 
 # Prerequisites
 
