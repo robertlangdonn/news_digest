@@ -1,81 +1,117 @@
-import fs from 'fs'; // Import the 'fs' module to read and write JSON files
+import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
+
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: "YOUR_API_KEY",
-}); //Replace this with your OpenAI API Key
+  apiKey: process.env.OPENAI_API_KEY, // This will now pull the API key from your .env file
+});
 
-// Read the JSON file
-const jsonData = fs.readFileSync('scraped_news.json', 'utf8'); //Replace the file name
-const data = JSON.parse(jsonData);
+console.log('Script initialized.');
 
+// Function to read JSON data from a file
+function readJsonFile(filePath) {
+  console.log(`Reading data from ${filePath}...`);
+  if (fs.existsSync(filePath)) {
+    const fileData = fs.readFileSync(filePath, 'utf8');
+    console.log(`Data read successfully from ${filePath}.`);
+    return JSON.parse(fileData);
+  } else {
+    console.log(`File not found: ${filePath}. Creating a new one.`);
+    fs.writeFileSync(filePath, JSON.stringify([]));
+    return [];
+  }
+}
+
+// Read the scraped data and the summary file
+const scrapedData = readJsonFile('scraped_news.json');
+const summaryData = readJsonFile('news_summary.json');
+const totalEntries = scrapedData.length;
+
+// Create a set of processed URLs
+const processedUrls = new Set(summaryData.map(entry => entry.URL));
+
+// Function to append results to the summary file
+const appendToSummaryFile = (result) => {
+  console.log(`Appending result for URL: ${result.URL}`);
+  summaryData.push(result);
+  fs.writeFileSync('news_summary.json', JSON.stringify(summaryData, null, 2));
+  console.log(`Result for URL: ${result.URL} appended to summary file.`);
+};
+
+// Delay function for rate limiting
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Define a rate limiting function
+// Rate limiting wrapper function
 const rateLimit = async (fn, delayMs, ...args) => {
+  console.log(`Rate limiting: Waiting for ${delayMs}ms.`);
   await delay(delayMs);
+  console.log('Delay finished, executing function.');
   return fn(...args);
 };
 
-// Initialize an array to store the results
-const results = [];
-
-// Loop through the entries in the JSON file
+// Main function to process entries
 const processEntries = async () => {
-  for (const entry of data) {
-    const userMessage = entry.extractedText.text; // Access the "text" field within the nested structure
+  console.log(`Starting to process entries. Total entries found: ${totalEntries}`);
 
-    // Check if userMessage is not empty
-    if (userMessage && userMessage.trim() !== '') {
-      try {
-        // Make the API request with rate limiting
-        const response = await rateLimit(async () => {
-          return await openai.chat.completions.create({
-            model: 'gpt-3.5-turbo', //Change model as needed. Keep in mind the pricing and ratelimits of the model you use
-            messages: [
-              {
-                role: 'system',
-                content:
-                  "Read noisy scraped news text and summarize it in 3 bullet points. You will only share the 3 bullet point summary as your response.",
-              }, // Change this prompt as needed
-              {
-                role: 'user',
-                content: userMessage,
-              },
-            ],
-            //Adjust temperature and output tokens as needed
-            temperature: 0.1, 
-            max_tokens: 256,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
-          });
-        }, 1500); // Wait for this number of milliseconds between requests 
+  for (let index = 0; index < totalEntries; index++) {
+    const entry = scrapedData[index];
+    const { url, extractedText } = entry;
+    console.log(`Processing entry ${index + 1}/${totalEntries}: ${url}`);
 
-        // Extract the required values and add them to the results array
-        const result = {
-          Title: entry.extractedText.title,
-          URL: entry.url,
-          Source: entry.extractedText.hostname,
-          Summary: response.choices[0].message.content,
-        };
+    if (!processedUrls.has(url)) {
+      const userMessage = extractedText.text;
 
-        results.push(result);
+      if (userMessage && userMessage.trim() !== '') {
+        console.log(`Valid userMessage found for entry ${index + 1}. Making API request for URL: ${url}`);
 
-        // Save the API response somewhere (you can remove this if not needed)
-        console.log(response.choices[0].message.content);
-        console.log(response);
-      } catch (error) {
-        console.error('Error making API request:', error);
+        try {
+          const response = await rateLimit(async () => {
+            return openai.chat.completions.create({
+              model: 'gpt-3.5-turbo',
+              messages: [
+                {
+                  role: 'system',
+                  content: "Read noisy scraped news text and summarize it in 3 bullet points.",
+                },
+                {
+                  role: 'user',
+                  content: userMessage,
+                },
+              ],
+              temperature: 0.5,
+              max_tokens: 256,
+              top_p: 1,
+              frequency_penalty: 0,
+              presence_penalty: 0,
+            });
+          }, 1500);
+
+          const result = {
+            Title: extractedText.title,
+            URL: url,
+            Source: extractedText.hostname,
+            Summary: response.choices[0].message.content,
+          };
+
+          appendToSummaryFile(result);
+          processedUrls.add(url);
+          console.log(`Processed and saved result for entry ${index + 1}: ${url}`);
+        } catch (error) {
+          console.error(`API request failed for entry ${index + 1}: ${url}`, error);
+        }
+      } else {
+        console.log(`No userMessage found or it was empty for entry ${index + 1}: ${url}, skipping.`);
       }
     } else {
-      console.log('Empty userMessage found, skipping...');
+      console.log(`URL already processed for entry ${index + 1}: ${url}, skipping.`);
     }
   }
 
-  // Write the results to a JSON file
-  fs.writeFileSync('news_summary.json', JSON.stringify(results, null, 2));
+  console.log('Processing of all entries completed.');
 };
 
-// Call the function to start processing entries
-processEntries();
+processEntries().catch(error => {
+  console.error('An error occurred during the processing of entries:', error);
+});
