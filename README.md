@@ -14,7 +14,7 @@ npm i
 
 ``` 
 
-# How to use
+# How to Use
 - Populate `input.csv` with the URLs of the news articles you wish to summarize. Also, make sure you have your API keys in the `.env` file.
 
 - Understand the Scripts:
