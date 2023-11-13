@@ -39,7 +39,8 @@ node report.js
 
 node get_news_text.js
 
-```  
+```
+
 
 ## Step 2: Summarize News Articles
 - To summarize the extracted news articles, run `news_summarizer.mjs`. This script uses GPT-3.5 to condense the text of each article. You can adjust the script parameters, including changing the model, number of input and output tokens, and modifying the prompt. The default summarization prompt is: "Read noisy scraped news text and summarize it in 3 bullet points. You will only share the 3 bullet point summary as your response."
@@ -51,6 +52,7 @@ node news_summarizer.mjs
 
 ```
 
+
 ## Step 3: Format the Output
 Run the `format_md.js` script to format the output into Markdown, creating a file named `news_report_{TIMESTAMP}.md` in the `daily_reports\md` folder. It also renames the `news_summary.json` to `news_report_{TIMESTAMP}.json` and moves it to the `daily_reports\json` folder, ensuring both Markdown and JSON formatted reports are neatly organized and timestamped for easy reference.
 
@@ -60,11 +62,13 @@ node format_md.js
 
 ```
 
+
 # Limitations
 
 - The scraping API used in `get_news.js` does not have JavaScript enabled, which means some news sites may not be successfully scraped.
 
 - When running `news_summarizer.mjs`, if you encounter instances where the OpenAI API does not respond for a specific entry, leading to a blank console, you will need to manually terminate the process using CTRL+C. Upon restarting the script, it automatically checks for duplicate URLs in `news_summary.json` and skips them. This functionality ensures that previously processed URLs are not reprocessed, allowing the script to resume summarization from the next unique URL in the sequence.
+
 
 
 # Next Steps?
