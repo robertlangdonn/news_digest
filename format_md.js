@@ -58,7 +58,7 @@ console.log(`Markdown report saved as: ${outputMarkdownFilename}`);
 // Check if the source JSON file still exists before trying to rename it
 if (fs.existsSync('news_summary.json')) {
   // Rename and move the summary JSON file to the new directory
-  fs.renameSync('ghana_news_summary.json', newJsonFilename);
+  fs.renameSync('news_summary.json', newJsonFilename);
   console.log(`Summary JSON file renamed and moved to: ${newJsonFilename}`);
 } else {
   console.error('Error: Source JSON file was not found or already moved. Cannot rename.');
